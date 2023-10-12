@@ -79,9 +79,6 @@ class HTTPClient(object):
         # Obtain the host, port, and path.
         # Need path, host for the request itself. Need host, port to make the connection.
         pURL = urllib.parse.urlparse(url)
-
-        print("pUrl: {}".format(pURL)) # TODO: remove
-
         hostAndPort = pURL.netloc.split(":")
 
         # Take care of unspecified ports
@@ -89,42 +86,24 @@ class HTTPClient(object):
             host = hostAndPort[0]
             port = 80 # default port for TCP and HTTP
         else:
-            host = pURL.netloc.split(":")[0]
-            port = pURL.netloc.split(":")[1]
+            host = hostAndPort[0]
+            port = hostAndPort[1]
         
         # Get or correct path
         path = pURL.path
         if len(path) < 1:
             path = "/"
 
-        # TODO: remove
-        # try:
-        #     host = pURL.netloc.split(":")[0]
-        #     port = pURL.netloc.split(":")[1]
-        #     path = pURL.path
-        #     if len(path) < 1:
-        #         path = "/"
-        # except Exception as e:
-        #     print("testInternetGets Error: {}\n".format(e))
-        #     host = "127.0.0.1"
-        #     port = 8080
-        #     path = "/"
-
         return path, host, port
 
 
     def GET(self, url, args=None):
-        # TODO: remove
-        print("\nGET function ....")
-        #print("url: {}".format(url))
-        #print("args: {}".format(args))
-
         # Parse the url
         path, host, port = self.parseURL(url)
 
         # Connect to socket, send the request, and close
-        self.connect(host, int(port))
         request = "GET "+path+" HTTP/1.1\r\nHost: "+host+"\r\nAccept: */*\r\nConnection: close\r\n\r\n"
+        self.connect(host, int(port))
         self.sendall(request) # Note: sendall doesn't need send and shutdown SHUT_WR
         received = self.recvall(self.socket)
         self.close()
@@ -138,17 +117,9 @@ class HTTPClient(object):
 
 
     def POST(self, url, args=None):
-        # TODO: remove
-        print("\nPOST function ....")
-        # print("url: {}".format(url))
-        # print("args: {}".format(args))
-
         # Parse the url
         path, host, port = self.parseURL(url)
         
-        # Connect to socket
-        self.connect(host, int(port))
-
         # Format the request (note Connection: close), and encode the data to be posted
         if not args:
             args = ""
@@ -156,8 +127,10 @@ class HTTPClient(object):
         else:
             data = urllib.parse.urlencode(args)
         length=str(len(data))
-
         request = "POST "+path+" HTTP/1.1\r\nHost: "+host+"\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: "+length+"\r\nAccept: */*\r\nConnection: close\r\n\r\n"+data
+
+        # Connect to socket
+        self.connect(host, int(port))
         self.sendall(request) # Note: sendall doesn't need send and shutdown SHUT_WR
         received = self.recvall(self.socket)
         self.close()

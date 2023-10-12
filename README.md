@@ -18,3 +18,11 @@ examples thus some of the code is Copyright © 2001-2013 Python
 Software Foundation; All Rights Reserved under the PSF license (GPL
 compatible) http://docs.python.org/2/library/socketserver.html
 
+Sources Referenced
+========================
+* Python SOCKETSERVER library - https://docs.python.org/3/library/socketserver.html
+* Python urllib.parse — Parse URLs into components - https://docs.python.org/3/library/urllib.parse.html
+* urllib.parse — Parse URLs into components in Python - https://www.tutorialspoint.com/urllib-parse-parse-urls-into-components-in-python
+* Request header - https://developer.mozilla.org/en-US/docs/Glossary/Request_header
+* POST - https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST
+* Default Port Numbers - https://docs.oracle.com/en/storage/tape-storage/sl4000/slklg/default-port-numbers.html
